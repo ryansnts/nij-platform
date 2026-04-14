@@ -125,8 +125,8 @@ SIMPLE_JWT = {
 _cors_origins = env(
     "CORS_ALLOWED_ORIGINS", default="http://localhost:3000,http://localhost:80"
 )
-if _cors_origins == "*" or _cors_origins == "https://*":
-    CORS_ALLOWED_ORIGINS = ["*"]
+if _cors_origins.strip() in ("*", "https://*", "http://*"):
+    CORS_ALLOW_ALL_ORIGINS = True
 else:
     CORS_ALLOWED_ORIGINS = [o.strip() for o in _cors_origins.split(",")]
 CORS_ALLOW_CREDENTIALS = True
