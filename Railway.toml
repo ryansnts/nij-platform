@@ -1,0 +1,8 @@
+[build]
+builder = "docker"
+dockerfile = "Dockerfile"
+
+[deploy]
+numReplicas = 1
+restartPolicyType = "on-failure"
+restartPolicyLimit = 10
