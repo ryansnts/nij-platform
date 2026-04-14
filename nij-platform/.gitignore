@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+*.sqlite3
+staticfiles/
+media/
+
+# Node
+node_modules/
+.next/
+out/
+.npm
+
+# Env
+.env
+.env.local
+.env.production
+
+# Docker
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
