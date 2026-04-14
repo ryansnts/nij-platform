@@ -2,9 +2,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
+    path("", RedirectView.as_view(url="/login/", permanent=False)),
     path("django-admin/", admin.site.urls),
     path("api/auth/", include("apps.authentication.urls")),
     path("api/documents/", include("apps.documents.urls")),
@@ -12,5 +14,9 @@ urlpatterns = [
     path("api/audit/", include("apps.audit.urls")),
     # API Docs
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+    path(
+        "api/docs/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
