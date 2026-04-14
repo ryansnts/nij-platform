@@ -71,7 +71,9 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -120,10 +122,13 @@ SIMPLE_JWT = {
 }
 
 # ── CORS ─────────────────────────────────────────────────
-CORS_ALLOWED_ORIGINS = env.list(
-    "CORS_ALLOWED_ORIGINS",
-    default=["http://localhost:3000", "http://localhost:80"],
+_cors_origins = env(
+    "CORS_ALLOWED_ORIGINS", default="http://localhost:3000,http://localhost:80"
 )
+if _cors_origins == "*" or _cors_origins == "https://*":
+    CORS_ALLOWED_ORIGINS = ["*"]
+else:
+    CORS_ALLOWED_ORIGINS = [o.strip() for o in _cors_origins.split(",")]
 CORS_ALLOW_CREDENTIALS = True
 
 # ── Celery ───────────────────────────────────────────────
