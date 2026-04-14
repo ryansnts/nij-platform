@@ -3,13 +3,19 @@ set -e
 
 if [ -n "$DATABASE_URL" ]; then
   echo "[NIJ] Usando DATABASE_URL do Render..."
-  DB_HOST=$(echo $DATABASE_URL | sed -E 's|.*@([^:]+):.*|\1|')
+  DB_HOST=$(echo $DATABASE_URL | sed -E 's|.*@||' | sed -E 's|:.*||')
+  DB_USER=$(echo $DATABASE_URL | sed -E 's|.*://||' | cut -d':' -f1)
+  DB_PASS=$(echo $DATABASE_URL | sed -E 's|.*://[^:]+:||' | cut -d'@' -f1)
+  DB_NAME=$(echo $DATABASE_URL | sed -E 's|.*/||')
 else
   DB_HOST=db
+  DB_USER=$POSTGRES_USER
+  DB_PASS=$POSTGRES_PASSWORD
+  DB_NAME=$POSTGRES_DB
 fi
 
 echo "[NIJ] Aguardando PostgreSQL em $DB_HOST..."
-until pg_isready -h $DB_HOST -U "$POSTGRES_USER" -d "$POSTGRES_DB" -q; do
+until pg_isready -h $DB_HOST -U "$DB_USER" -d "$DB_NAME" -q; do
   sleep 2
 done
 echo "[NIJ] PostgreSQL pronto."
