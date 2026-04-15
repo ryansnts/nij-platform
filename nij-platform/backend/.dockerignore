@@ -1,7 +1,0 @@
-__pycache__
-*.pyc
-.env*
-media/
-staticfiles/
-*.sqlite3
-.venv
